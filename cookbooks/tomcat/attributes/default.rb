@@ -1,0 +1,5 @@
+default['tomcat']['group'] = 'tomcat'
+default['tomcat']['home_dir'] = '/opt/tomcat'
+default['tomcat']['shell'] = '/bin/nologin'
+default['tomcat']['mode'] = '750'
+default['tomcat']['user'] = 'tomcat'
