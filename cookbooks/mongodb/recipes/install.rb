@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 yum_repository 'mongodb' do
   action :create
   description node['mongodb']['description']
