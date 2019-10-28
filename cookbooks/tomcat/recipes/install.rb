@@ -9,24 +9,26 @@ user node['tomcat']['user'] do
   shell node['tomcat']['shell']
 end
 
-# download tomcat
-# remote_file Chef::Config[:file_cache_path] + "#{node['tomcat']['version']}.tar.gz" do
-remote_file "/tmp/apache-tomcat-#{node['tomcat']['version']}.tar.gz" do
-  source "https://archive.apache.org/dist/tomcat/tomcat-#{node['tomcat']['major-version']}/v#{node['tomcat']['version']}/bin/apache-tomcat-#{node['tomcat']['version']}.tar.gz"
-end
-
 # create the tomcat home directory
 directory node['tomcat']['home_dir'] do
   group node['tomcat']['group']
 end
 
+# download tomcat
+# remote_file Chef::Config[:file_cache_path] + "#{node['tomcat']['version']}.tar.gz" do
+remote_file "/tmp/apache-tomcat-#{node['tomcat']['version']}.tar.gz" do
+  source "https://archive.apache.org/dist/tomcat/tomcat-#{node['tomcat']['major-version']}/v#{node['tomcat']['version']}/bin/apache-tomcat-#{node['tomcat']['version']}.tar.gz"
+  checksum node['tomcat']['checksum']
+  notifies :stop, 'systemd_unit[tomcat.service]', :before
+  notifies :run, 'bash[extract tomcat archive]', :immediate
+end
+
 # extract the downloaded tomcat archive to the tomcat home directory
 bash 'extract tomcat archive' do
-  # cwd ::File.dirname('/tmp')
   code <<-EOH
     tar xvf "/tmp/apache-tomcat-#{node['tomcat']['version']}.tar.gz" -C #{node['tomcat']['home_dir']} --strip-components=1
   EOH
-  not_if { ::File.exist?("#{node['tomcat']['home_dir']}/conf") }
+  action :nothing
 end
 
 # configure tomcat directory ownership and permissions
