@@ -1,0 +1,10 @@
+name: my-centos
+title: Custom CentOS 7 Server Security and Standard Settings
+maintainer: The Authors
+copyright: The Authors
+copyright_email: you@example.com
+license: Apache-2.0
+summary: An InSpec Compliance Profile
+version: 0.1.2
+supports:
+  platform-family: redhat
