@@ -1,0 +1,38 @@
+---
+driver:
+  name: vagrant
+
+## The forwarded_port port feature lets you connect to ports on the VM guest via
+## localhost on the host.
+## see also: https://www.vagrantup.com/docs/networking/forwarded_ports.html
+
+#  network:
+#    - ["forwarded_port", {guest: 80, host: 8080}]
+
+provisioner:
+  name: chef_zero
+  # always_update_cookbooks: true
+  # client_rb:
+  #   data_collector.server_url: 'https://192.168.59.199/data-collector/v0/'
+  #   data_collector.token: 'OI36GCZlPuvhmVermEDYUfhRtN8='
+  #   verify_api_cert: false
+  #   ssl_verify_mode: :verify_none
+  
+
+  ## product_name and product_version specifies a specific Chef product and version to install.
+  ## see the Chef documentation for more details: https://docs.chef.io/config_yml_kitchen.html
+  #  product_name: chef
+  #  product_version: 15
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: centos-7
+
+suites:
+  - name: default
+    verifier:
+      inspec_tests:
+        - test/integration/default
+    attributes:
