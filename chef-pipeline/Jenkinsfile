@@ -11,9 +11,9 @@ pipeline {
                 echo "Second stage"
             }
         }
-        stage('Third Stage') {
+        stage('Download MongoDB') {
             steps {
-                echo "Third stage"
+                git credentialsId: 'git-repo-creds', url: 'https://github.com/pocsteve/workshops.git'
             }
         }
     }
