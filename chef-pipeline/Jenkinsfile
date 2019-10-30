@@ -13,7 +13,7 @@ pipeline {
         }
         stage('MongoDB Kitchen Test') {
             steps {
-                cd "$WORKSPACE/cookbooks/mongodb"
+                sh "cd $WORKSPACE/cookbooks/mongodb"
                 sh 'kitchen test'
             }
         }
