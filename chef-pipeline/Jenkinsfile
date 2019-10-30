@@ -6,14 +6,15 @@ pipeline {
                 sh "rm -rf $WORKSPACE/*"
             }
         }
-        stage('Second Stage') {
-            steps {
-                echo "Second stage"
-            }
-        }
         stage('Download MongoDB') {
             steps {
                 git credentialsId: 'git-repo-creds', url: 'https://github.com/pocsteve/workshops.git'
+            }
+        }
+        stage('MongoDB Kitchen Test') {
+            steps {
+                cd "$WORKSPACE/cookbooks/mongodb"
+                sh 'kitchen test''
             }
         }
     }
