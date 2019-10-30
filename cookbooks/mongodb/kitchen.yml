@@ -1,31 +1,30 @@
 ---
 driver:
-  name: dokken
-  chef_version: 15
+  name: vagrant
 
-transport:
-  name: dokken
+## The forwarded_port port feature lets you connect to ports on the VM guest via
+## localhost on the host.
+## see also: https://www.vagrantup.com/docs/networking/forwarded_ports.html
+
+#  network:
+#    - ["forwarded_port", {guest: 80, host: 8080}]
 
 provisioner:
-  name: dokken
-  chef_license: accept-no-persist
+  name: chef_zero
+
+  ## product_name and product_version specifies a specific Chef product and version to install.
+  ## see the Chef documentation for more details: https://docs.chef.io/config_yml_kitchen.html
+  #  product_name: chef
+  #  product_version: 15
 
 verifier:
   name: inspec
 
 platforms:
   - name: centos-7
-    driver:
-      image: dokken/centos-7
-      privileged: true
-      pid_one_command: /usr/lib/systemd/systemd
-      volumes:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
 
 suites:
   - name: default
-    # run_list:
-    # - recipe[mongodb]
     verifier:
       inspec_tests:
         - test/integration/default
