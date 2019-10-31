@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 yum_repository 'mongodb' do
   action :create
   description node['mongodb']['description']
@@ -9,5 +11,5 @@ end
 yum_package 'mongodb-org'
 
 service 'mongod' do
-  action [:enable, :start]
+  action %i(enable start)
 end

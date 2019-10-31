@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 name 'mongodb'
-maintainer 'The Authors'
-maintainer_email 'you@example.com'
+maintainer 'Steve Fraser'
+maintainer_email 'sfraser@chef.io'
 license 'All Rights Reserved'
 description 'Installs/Configures mongodb'
 version '0.3.0'
