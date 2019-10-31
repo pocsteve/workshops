@@ -1,0 +1,29 @@
+I, [2019-10-30T18:58:48.061421 #18752]  INFO -- Kitchen: -----> Starting Kitchen (v2.3.3)
+E, [2019-10-30T18:58:48.068346 #18752] ERROR -- Kitchen: ------Exception-------
+E, [2019-10-30T18:58:48.068479 #18752] ERROR -- Kitchen: Class: Kitchen::UserError
+E, [2019-10-30T18:58:48.068565 #18752] ERROR -- Kitchen: Message: Kitchen YAML file C:/Users/steve/workshops/kitchen.yml does not exist.
+E, [2019-10-30T18:58:48.068680 #18752] ERROR -- Kitchen: ----------------------
+E, [2019-10-30T18:58:48.068783 #18752] ERROR -- Kitchen: ------Backtrace-------
+E, [2019-10-30T18:58:48.068862 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/lib/kitchen/loader/yaml.rb:65:in `read'
+E, [2019-10-30T18:58:48.068922 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/lib/kitchen/config.rb:154:in `data'
+E, [2019-10-30T18:58:48.068983 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/lib/kitchen/config.rb:132:in `suites'
+E, [2019-10-30T18:58:48.069043 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/lib/kitchen/config.rb:184:in `filter_instances'
+E, [2019-10-30T18:58:48.069105 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/lib/kitchen/config.rb:143:in `build_instances'
+E, [2019-10-30T18:58:48.069206 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/lib/kitchen/config.rb:117:in `instances'
+E, [2019-10-30T18:58:48.069302 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/lib/kitchen/command.rb:112:in `filtered_instances'
+E, [2019-10-30T18:58:48.069399 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/lib/kitchen/command.rb:142:in `parse_subcommand'
+E, [2019-10-30T18:58:48.069538 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/lib/kitchen/command/action.rb:35:in `block in call'
+E, [2019-10-30T18:58:48.069632 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/2.6.0/benchmark.rb:293:in `measure'
+E, [2019-10-30T18:58:48.069731 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/lib/kitchen/command/action.rb:34:in `call'
+E, [2019-10-30T18:58:48.069829 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/lib/kitchen/cli.rb:52:in `perform'
+E, [2019-10-30T18:58:48.069919 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/lib/kitchen/cli.rb:198:in `block (2 levels) in <class:CLI>'
+E, [2019-10-30T18:58:48.070010 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/thor-0.20.3/lib/thor/command.rb:27:in `run'
+E, [2019-10-30T18:58:48.070097 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/thor-0.20.3/lib/thor/invocation.rb:126:in `invoke_command'
+E, [2019-10-30T18:58:48.070208 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/thor-0.20.3/lib/thor.rb:387:in `dispatch'
+E, [2019-10-30T18:58:48.070294 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/thor-0.20.3/lib/thor/base.rb:466:in `start'
+E, [2019-10-30T18:58:48.070372 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/bin/kitchen:13:in `block in <top (required)>'
+E, [2019-10-30T18:58:48.070449 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/lib/kitchen/errors.rb:171:in `with_friendly_errors'
+E, [2019-10-30T18:58:48.070508 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/embedded/lib/ruby/gems/2.6.0/gems/test-kitchen-2.3.3/bin/kitchen:13:in `<top (required)>'
+E, [2019-10-30T18:58:48.070645 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/bin/kitchen:372:in `load'
+E, [2019-10-30T18:58:48.070898 #18752] ERROR -- Kitchen: C:/opscode/chef-workstation/bin/kitchen:372:in `<main>'
+E, [2019-10-30T18:58:48.070957 #18752] ERROR -- Kitchen: ----End Backtrace-----

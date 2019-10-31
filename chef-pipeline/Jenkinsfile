@@ -1,20 +1,38 @@
 pipeline {
     agent any
+    environment {
+        WORKSPACE = "/chef-repo/workspace/workshop-sandbox"
+    }
     stages {
         stage('Delete the workspace') {
             steps {
-                sh "rm -rf $WORKSPACE/*"
+                sh "sudo rm -rf $WORKSPACE/*"
             }
         }
-        stage('Download MongoDB') {
+        stage('Download Workshop') {
             steps {
                 git credentialsId: 'git-repo-creds', url: 'https://github.com/pocsteve/workshops.git'
             }
         }
-        stage('MongoDB Kitchen Test') {
+        stage('Functional Testing') {
             steps {
-                sh "cd $WORKSPACE/cookbooks/mongodb"
-                sh 'kitchen test'
+                dir("$WORKSPACE/cookbooks") {
+                    echo '*** Building Policyfile ***'
+                    sh 'sudo chef install ../policyfiles/workshop.rb'
+                    echo '*** Running Test Kitchen ***'
+                    sh 'sudo kitchen verify'
+                    sh 'sudo kitchen converge'
+                    sh 'sudo kitchen verify'
+                    sh 'sudo kitchen destroy'
+                }
+            }
+        }
+        stage('Upload to Chef Server') {
+            steps {
+                dir("$WORKSPACE/policyfiles") {
+                    echo '*** Uploading Policy to Chef Server ***'
+                    sh 'sudo chef push sandbox workshop.lock.json'
+                }
             }
         }
     }
