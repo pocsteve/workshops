@@ -20,6 +20,9 @@ pipeline {
             steps {
                 echo '*** Lint Testing ***'
                 sh 'sudo cookstyle .'
+                dir("$WORKSPACE/cookbooks") {
+                    sh 'sudo foodcritic . -t ~FC078'
+                }
             }
         }
         stage('Functional Testing') {
