@@ -1,4 +1,4 @@
-describe bash('/opt/tomcat/bin/version.sh') do
+describe bash('/opt/tomcat-8.5.45/bin/version.sh') do
   its('stdout') { should match /Server number:  8.5.45.0/ }
 end
 
