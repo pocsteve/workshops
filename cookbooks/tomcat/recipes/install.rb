@@ -35,7 +35,7 @@ ruby_block 'set recursive ownership & permissions' do
 end
 
 template '/etc/systemd/system/tomcat.service' do
-  source 'tomcat.service.erb' 
+  source 'tomcat.service.erb'
   notifies :run, 'execute[systemctl-daemon-reload]', :immediately
   notifies :restart, 'systemd_unit[tomcat.service]', :delayed
 end
