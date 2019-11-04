@@ -6,7 +6,7 @@ pipeline {
   stages {
     stage('Checkout Workshop') {
       steps {
-        git branch: 'master', credentialsId: 'git-repo-creds', url: 'https://github.com/pocsteve/workshops.git'
+        git credentialsId: 'git-repo-creds', url: 'https://github.com/pocsteve/workshops.git'
       }
     }
     stage('Lint Testing') {
