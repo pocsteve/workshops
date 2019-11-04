@@ -8,13 +8,12 @@
 
 require 'spec_helper'
 
-  context 'When all attributes are default, on CentOS 7' do
-    # for a complete list of available platforms and versions see:
-    # https://github.com/chefspec/fauxhai/blob/master/PLATFORMS.md
-    platform 'centos', '7'
+context 'When all attributes are default, on CentOS 7' do
+  # for a complete list of available platforms and versions see:
+  # https://github.com/chefspec/fauxhai/blob/master/PLATFORMS.md
+  platform 'centos', '7'
 
-    it 'converges successfully' do
-      expect { chef_run }.to_not raise_error
-    end
+  it 'converges successfully' do
+    expect { chef_run }.to_not raise_error
   end
 end
