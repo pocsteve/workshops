@@ -3,13 +3,13 @@ maintainer 'Steve Fraser'
 maintainer_email 'sfraser@chef.io'
 license 'All Rights Reserved'
 description 'Installs/Configures tomcat'
-version '0.4.1'
+version '0.5.0'
 
 chef_version '>= 14.0'
 
 depends 'ark'
 
-%w( redhat centos ).each do |os|
+%w( redhat centos ubuntu).each do |os|
   supports os
 end
 

@@ -3,12 +3,10 @@ maintainer 'Steve Fraser'
 maintainer_email 'sfraser@chef.io'
 license 'All Rights Reserved'
 description 'Installs/Configures mongodb'
-version '0.3.1'
+version '0.4.0'
 chef_version '>= 14.0'
 
-depends 'sc-mongodb'
-
-%w( redhat centos ).each do |os|
+%w( redhat centos ubuntu ).each do |os|
   supports os
 end
 
