@@ -1,5 +1,5 @@
-describe bash('/opt/tomcat-8.5.45/bin/version.sh') do
-  its('stdout') { should match /Server number:  8.5.45.0/ }
+describe bash('ps -ef|grep tomcat') do
+  its('stdout') { should match /tomcat-8.5.47/ }
 end
 
 describe http('http://localhost:8080') do
