@@ -9,7 +9,6 @@
 require 'spec_helper'
 
 describe 'tomcat::default' do
- 
   context 'When all attributes are default, on CentOS 7' do
     # for a complete list of available platforms and versions see:
     # https://github.com/chefspec/fauxhai/blob/master/PLATFORMS.md
