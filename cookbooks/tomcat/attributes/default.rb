@@ -4,7 +4,8 @@ default['tomcat']['shell'] = '/bin/nologin'
 default['tomcat']['permissions'] = 0o750
 default['tomcat']['user'] = 'tomcat'
 default['tomcat']['major-version'] = '8'
-default['tomcat']['openjdk-version'] = '1.7.0'
+default['tomcat']['centos-openjdk-version'] = '1.7.0'
+default['tomcat']['ubuntu-openjdk-version'] = '8'
 
 # 8.5.45
 default['tomcat']['home_dir'] = '/opt/tomcat-8.5.45'

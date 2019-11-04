@@ -26,23 +26,11 @@ platforms:
         consul:
           provider: systemd
 
-  - name: ubuntu-18.04
-    driver:
-      image: dokken/ubuntu-18.04
-      pid_one_command: /bin/systemd
-      intermediate_instructions:
-        - RUN /usr/bin/apt-get update
-    attributes:
-      poise-service:
-        consul:
-          provider: systemd
-
 suites:
   - name: default
-    provisioner:
-      policyfile: ../policyfiles/workshop.rb
+    # run_list:
+    # - recipe[mongodb]
     verifier:
       inspec_tests:
-        - mongodb/test/integration/default
-        - tomcat/test/integration/default
-    attributes:          
+        - test/integration/default
+    attributes:

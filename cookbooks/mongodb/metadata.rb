@@ -6,6 +6,8 @@ description 'Installs/Configures mongodb'
 version '0.3.1'
 chef_version '>= 14.0'
 
+depends 'sc-mongodb'
+
 %w( redhat centos ).each do |os|
   supports os
 end

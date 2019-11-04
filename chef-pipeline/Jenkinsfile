@@ -25,6 +25,14 @@ pipeline {
                 }
             }
         }
+        stage('Unit Testing') {
+            steps {
+                echo '*** Unit Testing ***'
+                dir("$WORKSPACE/cookbooks/tomcat") {
+                   sh 'sudo chef exec rspec spec/unit/recipes/default_spec.rb'
+                }
+            }
+        }
         stage('Functional Testing') {
             steps {
                 dir("$WORKSPACE/cookbooks") {

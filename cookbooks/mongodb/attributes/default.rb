@@ -5,3 +5,10 @@ default['mongodb']['baseurl'] = 'https://repo.mongodb.org/yum/redhat/$releasever
 # default['mongodb']['baseurl'] = 'http://downloads-distro.mongodb.org/repo/redhat/os/x86_64/'
 default['mongodb']['gpgcheck'] = false
 default['mongodb']['enabled'] = true
+
+# case node['platform']
+# when 'centos'
+#   default['mongodb']['package_version'] = '4.2.1-1'
+# when 'ubuntu'
+#   default['mongodb']['package_version'] = '4.2.1'
+# end

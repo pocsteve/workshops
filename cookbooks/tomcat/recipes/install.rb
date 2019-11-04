@@ -1,7 +1,12 @@
 include_recipe 'ark'
 
-# install java
-yum_package "java-#{node['tomcat']['openjdk-version']}-openjdk-devel"
+# install java - package names are different between Ubuntu and CentOS per openjdk.java.net/install
+case node['platform']
+when 'centos' 
+  yum_package "java-#{node['tomcat']['centos-openjdk-version']}-openjdk-devel"
+when 'ubuntu'
+  apt_package "openjdk-#{node['tomcat']['ubuntu-openjdk-version']}-jre"
+end
 
 # configure tomcat user and group
 group node['tomcat']['group']
