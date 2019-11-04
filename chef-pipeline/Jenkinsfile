@@ -44,7 +44,6 @@ pipeline {
           sh 'sudo kitchen verify'
           sh 'sudo kitchen converge'
           sh 'sudo kitchen verify'
-          sh 'sudo kitchen destroy'
         }
       }
     }
