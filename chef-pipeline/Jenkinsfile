@@ -1,58 +1,74 @@
 pipeline {
-    agent any
-    environment {
-        WORKSPACE = "/chef-repo/workspace/chef-pipeline"
+  agent any
+  environment {
+    WORKSPACE = "/chef-repo/workspace/workshop-sandbox"
+  }
+  stages {
+    stage('Checkout Workshop') {
+      steps {
+        git branch: 'ubuntu', credentialsId: 'git-repo-creds', url: 'https://github.com/pocsteve/workshops.git'
+      }
     }
-    stages {
-        stage('Delete the workspace') {
-            steps {
-                echo "*** workspace1 $WORKSPACE"
-                echo "*** workspace2 ${env.WORKSPACE}"
-                sh "sudo rm -rf $WORKSPACE/*"
-            }
+    stage('Lint Testing') {
+      parallel {
+        stage('Style Check') {
+          steps {
+            echo '*** cookstyle testing ***'
+            sh 'sudo cookstyle .'
+          }
         }
-        stage('Download Workshop') {
-            steps {
-                git credentialsId: 'git-repo-creds', url: 'https://github.com/pocsteve/workshops.git'
+        stage('Food Critic') {
+          steps {
+            echo '*** foodcritic testing ***'
+            dir("$WORKSPACE/cookbooks") {
+                sh 'sudo foodcritic . -t ~FC078'
             }
+          }
         }
-        stage('Lint Testing') {
-            steps {
-                echo '*** Lint Testing ***'
-                sh 'sudo cookstyle .'
-                dir("$WORKSPACE/cookbooks") {
-                    sh 'sudo foodcritic . -t ~FC078'
-                }
-            }
-        }
-        stage('Unit Testing') {
-            steps {
-                echo '*** Unit Testing ***'
-                dir("$WORKSPACE/cookbooks/tomcat") {
-                   sh 'sudo chef exec rspec spec/unit/recipes/default_spec.rb'
-                }
-            }
-        }
-        stage('Functional Testing') {
-            steps {
-                dir("$WORKSPACE/cookbooks") {
-                    echo '*** Building Policyfile ***'
-                    sh 'sudo chef install ../policyfiles/workshop.rb'
-                    echo '*** Running Test Kitchen ***'
-                    sh 'sudo kitchen verify'
-                    sh 'sudo kitchen converge'
-                    sh 'sudo kitchen verify'
-                    sh 'sudo kitchen destroy'
-                }
-            }
-        }
-        stage('Upload to Chef Server') {
-            steps {
-                dir("$WORKSPACE/policyfiles") {
-                    echo '*** Uploading Policy to Chef Server ***'
-                    sh 'sudo chef push sandbox workshop.lock.json'
-                }
-            }
-        }
+      }
     }
+    stage('Unit Testing') {
+      steps {
+        echo '*** Unit Testing ***'
+        dir("$WORKSPACE/cookbooks/tomcat") {
+          sh 'sudo chef exec rspec spec/unit/recipes/default_spec.rb'
+        }
+      }
+    }
+    stage('Functional Testing') {
+      steps {
+        dir("$WORKSPACE/cookbooks") {
+          echo '*** Building Policyfile ***'
+          sh 'sudo chef install ../policyfiles/workshop.rb'
+          echo '*** Running Test Kitchen ***'
+          sh 'sudo kitchen verify'
+          sh 'sudo kitchen converge'
+          sh 'sudo kitchen verify'
+          sh 'sudo kitchen destroy'
+        }
+      }
+    }
+    stage('Upload to Chef Server') {
+      steps {
+        dir("$WORKSPACE/policyfiles") {
+          echo '*** Uploading Policy to Chef Server ***'
+          sh 'sudo chef push sandbox workshop.lock.json'
+        }
+      }
+    }
+  }
+  post {
+    success {
+      echo 'The build was successful. Policy pushed to Chef Server'
+    }
+    failure {
+      echo "The build failed"
+    }
+    always {
+      dir("$WORKSPACE/cookbooks") {
+        sh 'sudo kitchen destroy'
+      }
+      cleanWs()
+    }
+  }
 }
