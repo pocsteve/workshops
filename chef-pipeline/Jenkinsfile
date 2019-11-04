@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-    WORKSPACE = "/chef-repo/workspace/workshop-sandbox"
+    WORKSPACE = "/chef-repo/workspace/chef-pipeline"
   }
   stages {
     stage('Checkout Workshop') {
