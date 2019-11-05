@@ -12,6 +12,10 @@ describe 'tomcat::default' do
   context 'When all attributes are default, on Ubuntu 18.04' do
     let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
+    it 'converges successfully' do
+      expect { chef_run }.to_not raise_error
+    end
+
     it 'creates group tomcat' do
       expect(chef_run).to create_group('tomcat')
     end
@@ -23,7 +27,10 @@ describe 'tomcat::default' do
     end
 
     it 'creates a template' do
-      expect(chef_run).to create_template('/etc/systemd/system/tomcat.service')
+      expect(chef_run).to create_template('/etc/systemd/system/tomcat.service').with(
+        tomcat_version: '8',
+        java_home: '/usr/lib/jvm/java-8-openjdk-amd64/jre',
+      )
     end
 
     it 'creates a service tomcat.service' do
@@ -35,6 +42,10 @@ describe 'tomcat::default' do
   context 'When all attributes are default, on CentOS 7' do
     let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'centos', version: '7').converge(described_recipe) }
 
+    it 'converges successfully' do
+      expect { chef_run }.to_not raise_error
+    end
+
     it 'creates group tomcat' do
       expect(chef_run).to create_group('tomcat')
     end
@@ -46,7 +57,10 @@ describe 'tomcat::default' do
     end
 
     it 'creates a template' do
-      expect(chef_run).to create_template('/etc/systemd/system/tomcat.service')
+      expect(chef_run).to create_template('/etc/systemd/system/tomcat.service').with(
+        tomcat_version: '8',
+        java_home: '/usr/lib/jvm/jre',
+      )
     end
 
     it 'creates a service tomcat.service' do

@@ -39,10 +39,27 @@ ruby_block 'set recursive ownership & permissions' do
   end
 end
 
-template '/etc/systemd/system/tomcat.service' do
-  source 'tomcat.service.erb'
-  notifies :run, 'execute[systemctl-daemon-reload]', :immediately
-  notifies :restart, 'systemd_unit[tomcat.service]', :delayed
+case node['platform']
+when 'centos'
+  template '/etc/systemd/system/tomcat.service' do
+    source 'tomcat.service.erb'
+    variables(
+      tomcat_version: node['tomcat']['version'].to_s,
+      java_home: '/usr/lib/jvm/jre'
+    )
+    notifies :run, 'execute[systemctl-daemon-reload]', :immediately
+    notifies :restart, 'systemd_unit[tomcat.service]', :delayed
+  end
+when 'ubuntu'
+  template '/etc/systemd/system/tomcat.service' do
+    source 'tomcat.service.erb'
+    variables(
+      tomcat_version: node['tomcat']['version'].to_s,
+      java_home: "/usr/lib/jvm/java-#{node['tomcat']['ubuntu-openjdk-version']}-openjdk-amd64/jre"
+    )
+    notifies :run, 'execute[systemctl-daemon-reload]', :immediately
+    notifies :restart, 'systemd_unit[tomcat.service]', :delayed
+  end
 end
 
 execute 'systemctl-daemon-reload' do
