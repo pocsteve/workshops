@@ -5,7 +5,7 @@ case node['platform']
 when 'centos'
   yum_package "java-#{node['tomcat']['centos-openjdk-version']}-openjdk-devel"
 when 'ubuntu'
-  apt_package "openjdk-#{node['tomcat']['ubuntu-openjdk-version']}-jre"
+  apt_package "openjdk-#{node['tomcat']['ubuntu-openjdk-version']}-jdk"
 end
 
 # configure tomcat user and group
@@ -30,36 +30,17 @@ end
 # configure tomcat directory ownership and permissions
 ruby_block 'set recursive ownership & permissions' do
   block do
-    # FileUtils.chown_R('root', node['tomcat']['group'], node['tomcat']['home_dir'])
     FileUtils.chmod_R(node['tomcat']['permissions'], "#{node['tomcat']['home_dir']}/conf")
-    FileUtils.chown_R(node['tomcat']['user'], node['tomcat']['group'], "#{node['tomcat']['home_dir']}/webapps")
-    FileUtils.chown_R(node['tomcat']['user'], node['tomcat']['group'], "#{node['tomcat']['home_dir']}/work")
-    FileUtils.chown_R(node['tomcat']['user'], node['tomcat']['group'], "#{node['tomcat']['home_dir']}/temp")
-    FileUtils.chown_R(node['tomcat']['user'], node['tomcat']['group'], "#{node['tomcat']['home_dir']}/logs")
+    %w( webapps work temp logs ).each do |subdir|
+      FileUtils.chown_R(node['tomcat']['user'], node['tomcat']['group'], "#{node['tomcat']['home_dir']}/#{subdir}")
+    end
   end
 end
 
-case node['platform']
-when 'centos'
-  template '/etc/systemd/system/tomcat.service' do
-    source 'tomcat.service.erb'
-    variables(
-      tomcat_version: node['tomcat']['version'].to_s,
-      java_home: '/usr/lib/jvm/jre'
-    )
-    notifies :run, 'execute[systemctl-daemon-reload]', :immediately
-    notifies :restart, 'systemd_unit[tomcat.service]', :delayed
-  end
-when 'ubuntu'
-  template '/etc/systemd/system/tomcat.service' do
-    source 'tomcat.service.erb'
-    variables(
-      tomcat_version: node['tomcat']['version'].to_s,
-      java_home: "/usr/lib/jvm/java-#{node['tomcat']['ubuntu-openjdk-version']}-openjdk-amd64/jre"
-    )
-    notifies :run, 'execute[systemctl-daemon-reload]', :immediately
-    notifies :restart, 'systemd_unit[tomcat.service]', :delayed
-  end
+template '/etc/systemd/system/tomcat.service' do
+  source 'tomcat.service.erb'
+  notifies :run, 'execute[systemctl-daemon-reload]', :immediately
+  notifies :restart, 'systemd_unit[tomcat.service]', :delayed
 end
 
 execute 'systemctl-daemon-reload' do
