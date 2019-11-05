@@ -31,6 +31,11 @@ pipeline {
       steps {
         echo '*** Unit Testing ***'
         dir("$WORKSPACE/cookbooks/tomcat") {
+          echo '*** tomcat ***'
+          sh 'sudo chef exec rspec spec/unit/recipes/default_spec.rb'
+        }
+        dir("$WORKSPACE/cookbooks/mongodb") {
+          echo '*** mongodb ***'
           sh 'sudo chef exec rspec spec/unit/recipes/default_spec.rb'
         }
       }
