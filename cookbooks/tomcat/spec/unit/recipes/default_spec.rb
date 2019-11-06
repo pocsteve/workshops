@@ -24,13 +24,8 @@ describe 'tomcat::default' do
   os.each do |platform, version|
     let(:chef_run) { ChefSpec::SoloRunner.new(platform: platform.to_s, version: version.to_s).converge(described_recipe) }
 
-    it 'creates a template' do
-      expect(chef_run).to create_template('/etc/systemd/system/tomcat.service')
-    end
-
-    it 'creates a service tomcat.service' do
-      expect(chef_run).to enable_systemd_unit('tomcat.service')
-      expect(chef_run).to start_systemd_unit('tomcat.service')
+    it 'converges successfully' do
+      expect { chef_run }.to_not raise_error
     end
 
     case platform.to_s
@@ -50,12 +45,12 @@ describe 'tomcat::default' do
 
     it 'extracts tomcat archive' do
       expect(chef_run).to install_ark('tomcat').with(
-        url: 'https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.45/bin/apache-tomcat-8.5.45.tar.gz',
+        url: 'https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.47/bin/apache-tomcat-8.5.47.tar.gz',
         path: '/opt',
         prefix_root: '/opt',
         group: 'tomcat',
-        version: '8.5.45',
-        checksum: 'd9b58d12979243fba01bbbbb33c140c8593940c005ec9acef1b2f54ce9b3d0fc'
+        version: '8.5.47',
+        checksum: 'dd08cf2675675d012f87127701794f767eaa1ddfa2734c143381f39bef611761'
       )
     end
 
@@ -63,7 +58,7 @@ describe 'tomcat::default' do
       expect(chef_run).to create_user('tomcat').with(
         group: 'tomcat',
         shell: '/bin/nologin',
-        home: '/opt/tomcat-8.5.45'
+        home: '/opt/tomcat-8.5.47'
       )
     end
 

@@ -12,8 +12,8 @@ describe 'mongodb::default' do
   context 'When all attributes are default, on Ubuntu 18.04' do
     let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '18.04').converge(described_recipe) }
 
-    it 'installs package mongodb-org' do
-      expect(chef_run).to install_yum_package('mongodb-org')
+    it 'converges successfully' do
+      expect { chef_run }.to_not raise_error
     end
 
     it 'installs package mongodb-org' do
@@ -39,9 +39,8 @@ describe 'mongodb::default' do
   context 'When all attributes are default, on CentOS 7' do
     let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'centos', version: '7').converge(described_recipe) }
 
-    it 'enables and starts mongod service' do
-      expect(chef_run).to enable_service('mongod')
-      expect(chef_run).to start_service('mongod')
+    it 'converges successfully' do
+      expect { chef_run }.to_not raise_error
     end
 
     it 'installs package mongodb-org' do

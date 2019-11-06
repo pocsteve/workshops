@@ -16,19 +16,19 @@ describe user('tomcat') do
   it { should exist }
   its('group') { should eq 'tomcat' }
   its('shell') { should eq '/bin/nologin' }
-  its('home') { should eq '/opt/tomcat-8.5.45' }
+  its('home') { should eq '/opt/tomcat-8.5.47' }
 end
 
-describe directory('/opt/tomcat-8.5.45') do
+describe directory('/opt/tomcat-8.5.47') do
   its('group') { should eq 'tomcat' }
 end
 
-describe directory('/opt/tomcat-8.5.45/conf') do
+describe directory('/opt/tomcat-8.5.47/conf') do
   its('mode') { should cmp '0750' }
 end
 
 %w( webapps work temp logs ).each do |subdir|
-  describe directory("/opt/tomcat-8.5.45/#{subdir}") do
+  describe directory("/opt/tomcat-8.5.47/#{subdir}") do
     its('owner') { should eq 'tomcat' }
     its('group') { should eq 'tomcat' }
   end
@@ -49,5 +49,5 @@ describe http('http://localhost:8080') do
 end
 
 describe bash('ps -ef|grep tomcat') do
-  its('stdout') { should match /tomcat-8.5.45/ }
+  its('stdout') { should match /tomcat-8.5.47/ }
 end
