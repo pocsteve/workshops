@@ -9,16 +9,56 @@
 require 'spec_helper'
 
 describe 'tomcat::default' do
-  context 'When all attributes are default, on CentOS 7' do
-    let(:chef_run) { ChefSpec::SoloRunner.new(platform: 'centos', version: '7').converge(described_recipe) }
+  os = { 'ubuntu' => '18.04' }
+  os.each do |platform, version|
+    let(:chef_run) { ChefSpec::SoloRunner.new(platform: platform.to_s, version: version.to_s).converge(described_recipe) }
+
+    it 'installs jdk 8' do
+      expect(chef_run).to install_apt_package('openjdk-8-jdk')
+    end
+  end
+end
+
+describe 'tomcat::default' do
+  os = { 'ubuntu' => '18.04', 'centos' => '7' }
+  os.each do |platform, version|
+    let(:chef_run) { ChefSpec::SoloRunner.new(platform: platform.to_s, version: version.to_s).converge(described_recipe) }
+
+    it 'converges successfully' do
+      expect { chef_run }.to_not raise_error
+    end
+
+    case platform.to_s
+    # when 'ubuntu'
+    #   it 'installs jdk 8' do
+    #     expect(chef_run).to install_apt_package('openjdk-8-jdk')
+    #   end
+    when 'centos'
+      it 'installs jdk 1.7' do
+        expect(chef_run).to install_yum_package('java-1.7.0-openjdk-devel')
+      end
+    end
 
     it 'creates group tomcat' do
       expect(chef_run).to create_group('tomcat')
     end
 
-    it 'adds user tomcat to group tomcat' do
+    it 'extracts tomcat archive' do
+      expect(chef_run).to install_ark('tomcat').with(
+        url: 'https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.47/bin/apache-tomcat-8.5.47.tar.gz',
+        path: '/opt',
+        prefix_root: '/opt',
+        group: 'tomcat',
+        version: '8.5.47',
+        checksum: 'dd08cf2675675d012f87127701794f767eaa1ddfa2734c143381f39bef611761'
+      )
+    end
+
+    it 'adds user tomcat' do
       expect(chef_run).to create_user('tomcat').with(
-        group: 'tomcat'
+        group: 'tomcat',
+        shell: '/bin/nologin',
+        home: '/opt/tomcat-8.5.47'
       )
     end
 

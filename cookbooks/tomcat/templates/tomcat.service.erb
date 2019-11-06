@@ -6,7 +6,12 @@ After=syslog.target network.target
 [Service]
 Type=forking
 
-Environment=JAVA_HOME=/usr/lib/jvm/jre
+<% if node['platform']=='centos' -%>
+  Environment=JAVA_HOME=/usr/lib/jvm/jre
+<% end -%>
+<% if node['platform']=='ubuntu' -%>
+   Environment=JAVA_HOME=/usr/lib/jvm/java-<%= node['tomcat']['ubuntu-openjdk-version'] %>-openjdk-amd64/jre
+<% end -%>
 Environment=CATALINA_PID=/opt/tomcat-<%= node['tomcat']['version'] %>/temp/tomcat.pid
 Environment=CATALINA_HOME=/opt/tomcat-<%= node['tomcat']['version'] %>
 Environment=CATALINA_BASE=/opt/tomcat-<%= node['tomcat']['version'] %>
