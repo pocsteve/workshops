@@ -1,12 +1,12 @@
 pipeline {
   agent any
   environment {
-    WORKSPACE = "/chef-repo/workspace/workshop-sandbox"
+    WORKSPACE = "/chef-repo/workspace/chef-pipeline"
   }
   stages {
     stage('Checkout Workshop') {
       steps {
-        git branch: 'ubuntu', credentialsId: 'git-repo-creds', url: 'https://github.com/pocsteve/workshops.git'
+        git credentialsId: 'git-repo-creds', url: 'https://github.com/pocsteve/workshops.git'
       }
     }
     stage('Lint Testing') {
@@ -31,6 +31,11 @@ pipeline {
       steps {
         echo '*** Unit Testing ***'
         dir("$WORKSPACE/cookbooks/tomcat") {
+          echo '*** tomcat ***'
+          sh 'sudo chef exec rspec spec/unit/recipes/default_spec.rb'
+        }
+        dir("$WORKSPACE/cookbooks/mongodb") {
+          echo '*** mongodb ***'
           sh 'sudo chef exec rspec spec/unit/recipes/default_spec.rb'
         }
       }
@@ -44,7 +49,6 @@ pipeline {
           sh 'sudo kitchen verify'
           sh 'sudo kitchen converge'
           sh 'sudo kitchen verify'
-          sh 'sudo kitchen destroy'
         }
       }
     }

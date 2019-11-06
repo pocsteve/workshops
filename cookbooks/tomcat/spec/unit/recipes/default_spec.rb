@@ -24,8 +24,13 @@ describe 'tomcat::default' do
   os.each do |platform, version|
     let(:chef_run) { ChefSpec::SoloRunner.new(platform: platform.to_s, version: version.to_s).converge(described_recipe) }
 
-    it 'converges successfully' do
-      expect { chef_run }.to_not raise_error
+    it 'creates a template' do
+      expect(chef_run).to create_template('/etc/systemd/system/tomcat.service')
+    end
+
+    it 'creates a service tomcat.service' do
+      expect(chef_run).to enable_systemd_unit('tomcat.service')
+      expect(chef_run).to start_systemd_unit('tomcat.service')
     end
 
     case platform.to_s
