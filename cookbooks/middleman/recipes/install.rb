@@ -107,6 +107,7 @@ end
 execute 'clone middleman-blog' do
   cwd '/etc'
   command 'sudo git clone https://github.com/learnchef/middleman-blog.git'
+  not_if { ::File.directory?('/etc/middleman-blog')}
 end
 
 # Install Bundler
@@ -132,6 +133,8 @@ bash 'Install thin service' do
     /usr/sbin/update-rc.d -f thin defaults
     EOH
 end
+
+cookbook_file '/etc/thin/config.ru'
  
 template '/etc/thin/blog.yml' do
   source 'blog.yml.erb'
