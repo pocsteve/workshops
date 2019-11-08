@@ -74,15 +74,39 @@ end
 # Install Git
 apt_package('git')
 
+# Install project dependencies
+user 'bundler_user' do
+  comment 'user to run bundler'
+  home '/home/bundler_user'
+  group 'sudo'
+  system true
+end
+
+# execute 'add bundler_user to sudo group' do
+#   command 'sudo usermod -aG sudo bundler_user'
+# end
+
+directory '/home/bundler_user' do
+  owner 'bundler_user'
+end
+
 directory '/etc/learnchef/middleman' do
+  user 'bundler_user'
   mode '0775'
   recursive true
 end
 
 # Clone the repo
-git '/etc/learnchef/middleman' do
-  repository 'https://github.com/learnchef/middleman-blog.git'
-  action :checkout
+# git 'middleman-blog' do
+#   repository 'https://github.com/learnchef/middleman-blog.git'
+#   destination '/etc'
+#   user 'bundler_user'
+#   action :checkout
+# end
+
+execute 'clone middleman-blog' do
+  cwd '/etc'
+  command 'sudo git clone https://github.com/learnchef/middleman-blog.git'
 end
 
 # Install Bundler
@@ -90,22 +114,15 @@ gem_package 'bundler' do
   version '1.15.4'
 end
 
-# Install project dependencies
-user 'bundler_user' do
-  comment 'user to run bundler'
-  home '/home/bundler_user'
-  gid '27'
-  system true
-end
-
-directory '/home/bundler_user' do
-  owner 'bundler_user'
-end
+# sudo 'passwordless-access' do - not available in v13.
+#   commands ['bundle install']
+#   nopasswd true
+# end
 
 execute 'install bundler' do
-  cwd '/etc/learnchef/middleman'
-  command 'bundle install'
-  # user 'bundler_user'
+  cwd '/etc/middleman-blog'
+  command 'sudo bundle install'
+  user 'bundler_user'
   # not_if ...
 end
 
@@ -118,6 +135,9 @@ end
  
 template '/etc/thin/blog.yml' do
   source 'blog.yml.erb'
+  variables(
+    :project_install_directory => '/etc/thin'
+  )
 end
 
 template '/etc/thin/blog.conf' do
