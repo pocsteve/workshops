@@ -14,3 +14,6 @@ run_list 'middleman::default'
 
 # Specify a custom source for a single cookbook:
 cookbook 'middleman', path: '.'
+cookbook 'ruby', path: '../ruby'
+cookbook 'apache2', path: '../apache2'
+cookbook 'bundler', path: '../bundler'
